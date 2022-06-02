@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class ClientController {
+public class UserController {
 
     @Autowired
     private ClientService clientService;
