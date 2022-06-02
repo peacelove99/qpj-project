@@ -18,4 +18,8 @@ public class ClientServiceImpl implements ClientService {
     public Client selectUserByLoginActAndPwd(Map<String, Object> map) {
         return clientMapper.selectUserByLoginActAndPwd(map);
     }
+    @Override
+    public int saveRegisterClient(Client client){
+        return clientMapper.insertClient(client);
+    }
 }

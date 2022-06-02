@@ -41,11 +41,12 @@
 
 			//发送请求
 			$.ajax({
-				url:"settings/qx/user/clientLogin.do",
+				url:"settings/qx/user/Login.do",
 				data:{
-					cName:name,
-					cPassword:password,
-					isRemPwd:isRemPwd
+					Name:name,
+					Password:password,
+					isRemPwd:isRemPwd,
+					role:role
 				},
 				type:'post',
 				dataType:'json',
@@ -93,15 +94,27 @@
 					</div>
 
 					<div class="checkbox" id="checkbox" style="position: relative;top: 30px; left: 10px;">
-						<label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
-						<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
-						<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
+						<c:if test="${cookie.role == 'clent'}">
+							<label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
+							<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
+							<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
+						</c:if>
+						<c:if test="${cookie.role == 'driver'}">
+							<label><input type="radio" name="role" value="clent">&nbsp;&nbsp;客户</label>
+							<label><input type="radio" name="role" value="driver" checked>&nbsp;&nbsp;司机</label>
+							<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
+						</c:if>
+						<c:if test="${cookie.role == 'driver'}">
+							<label><input type="radio" name="role" value="clent">&nbsp;&nbsp;客户</label>
+							<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
+							<label><input type="radio" name="role" value="admin" checked>&nbsp;&nbsp;管理员</label>
+						</c:if>
 						<br><br>
 						<label>
-							<c:if test="${not empty cookie.cName and not empty cookie.cPassword}">
+							<c:if test="${not empty cookie.Name and not empty cookie.Password}">
 								<input type="checkbox" id="isRemPwd" checked>
 							</c:if>
-							<c:if test="${empty cookie.cName or empty cookie.cPassword}">
+							<c:if test="${empty cookie.Name or empty cookie.Password}">
 								<input type="checkbox" id="isRemPwd">
 							</c:if>
 							十天内免登录

@@ -6,4 +6,6 @@ import java.util.Map;
 
 public interface ClientService {
     Client selectUserByLoginActAndPwd(Map<String,Object> map);
+
+    int saveRegisterClient(Client client);
 }
