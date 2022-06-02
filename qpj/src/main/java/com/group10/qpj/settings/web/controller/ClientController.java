@@ -11,13 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Random;
 
 @Controller
 public class ClientController {
@@ -34,6 +39,16 @@ public class ClientController {
         return "settings/qx/user/login";
     }
 
+    /**
+     * 分角色登录
+     * @param Name
+     * @param Password
+     * @param isRemPwd
+     * @param role
+     * @param session
+     * @param response
+     * @return
+     */
     @RequestMapping("/settings/qx/user/login.do")
     public @ResponseBody Object login(String Name, String Password, String isRemPwd, String role, HttpSession session, HttpServletResponse response){
         //封装参数
@@ -92,6 +107,12 @@ public class ClientController {
         return returnObject;
     }
 
+    /**
+     * 登出
+     * @param response
+     * @param session
+     * @return
+     */
     @RequestMapping("/settings/qx/user/logout.do")
     public String logout(HttpServletResponse response, HttpSession session){
         //清空cookie
@@ -107,20 +128,33 @@ public class ClientController {
         return "redirect:/";
     }
 
+    /**
+     * 跳转到注册界面
+     * @return
+     */
     @RequestMapping("/settings/qx/user/toRegister.do")
     public String toRegister(){
         //请求转发到注册页面
         return "settings/qx/user/register";
     }
 
+    /**
+     * 分角色注册
+     * @param name
+     * @param pwd
+     * @param phone
+     * @param email
+     * @param role
+     * @return
+     */
     @RequestMapping("/settings/qx/user/register.do")
     public @ResponseBody Object register(String name, String pwd, String phone, String email, String role){
         ReturnObject returnObject=new ReturnObject();
         switch (role){
             case "client":
+                System.out.println("客户注册");
                 //封装参数
                 Client client = new Client();
-                System.out.println("客户注册");
                 client.setcId(UUIDUtils.getUUID());
                 client.setcName(name);
                 client.setcPassword(MD5.encrypt(pwd));
@@ -151,5 +185,7 @@ public class ClientController {
 
         return returnObject;
     }
+
+
 
 }

@@ -104,7 +104,7 @@
                     <input class="form-control" id="email" type="text" placeholder="个人邮箱">
                 </div>
                 <div class="checkbox" id="checkbox" style="position: relative;top: 90px; left: 10px;">
-                    <label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
+                    <label><input type="radio" name="role" value="client" checked>&nbsp;&nbsp;客户</label>
                     <label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
                     <label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
                 </div>
