@@ -41,7 +41,7 @@
 
 			//发送请求
 			$.ajax({
-				url:"settings/qx/user/Login.do",
+				url:"settings/qx/user/login.do",
 				data:{
 					Name:name,
 					Password:password,
@@ -94,11 +94,9 @@
 					</div>
 
 					<div class="checkbox" id="checkbox" style="position: relative;top: 30px; left: 10px;">
-						<c:if test="${cookie.role == 'clent'}">
-							<label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
-							<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
-							<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
-						</c:if>
+						<label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
+						<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
+						<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
 						<c:if test="${cookie.role == 'driver'}">
 							<label><input type="radio" name="role" value="clent">&nbsp;&nbsp;客户</label>
 							<label><input type="radio" name="role" value="driver" checked>&nbsp;&nbsp;司机</label>

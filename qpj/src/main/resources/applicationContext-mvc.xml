@@ -43,8 +43,8 @@ http://www.springframework.org/schema/util/spring-util.xsd">
             <!--配置排除拦截的请求(优先级高)-->
             <mvc:exclude-mapping path="/settings/qx/user/toLogin.do"/>
             <mvc:exclude-mapping path="/settings/qx/user/toRegister.do"/>
-            <mvc:exclude-mapping path="/settings/qx/user/Login.do"/>
-            <mvc:exclude-mapping path="/settings/qx/user/Register.do"/>
+            <mvc:exclude-mapping path="/settings/qx/user/login.do"/>
+            <mvc:exclude-mapping path="/settings/qx/user/register.do"/>
             <!--拦截器类-->
             <bean class="com.group10.qpj.settings.web.interceptor.LoginInterceptor"/>
         </mvc:interceptor>

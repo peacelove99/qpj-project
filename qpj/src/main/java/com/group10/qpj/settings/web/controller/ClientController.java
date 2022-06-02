@@ -34,7 +34,7 @@ public class ClientController {
         return "settings/qx/user/login";
     }
 
-    @RequestMapping("/settings/qx/user/Login.do")
+    @RequestMapping("/settings/qx/user/login.do")
     public @ResponseBody Object clientLogin(String Name, String Password, String isRemPwd, String role, HttpSession session, HttpServletResponse response){
         //封装参数
         Map<String,Object> map = new HashMap<>();
@@ -111,19 +111,19 @@ public class ClientController {
         return "settings/qx/user/register";
     }
 
-    @RequestMapping("/settings/qx/user/clientRegister.do")
-    public @ResponseBody Object clientRegister(String Name, String Password, String Phone, String Email, String role){
-
+    @RequestMapping("/settings/qx/user/register.do")
+    public @ResponseBody Object clientRegister(String name, String pwd, String phone, String email, String role){
         ReturnObject returnObject=new ReturnObject();
         switch (role){
             case "clent":
                 //封装参数
-                Client client = null;
+                Client client = new Client();
+                System.out.println("客户注册");
                 client.setcId(UUIDUtils.getUUID());
-                client.setcName(Name);
-                client.setcPassword(MD5.encrypt(Password));
-                client.setcPhone(Phone);
-                client.setcEmail(Email);
+                client.setcName(name);
+                client.setcPassword(MD5.encrypt(pwd));
+                client.setcPhone(phone);
+                client.setcEmail(email);
                 client.setcRight(0);
                 try {
                     //调用service层方法，保存注册的客户信息

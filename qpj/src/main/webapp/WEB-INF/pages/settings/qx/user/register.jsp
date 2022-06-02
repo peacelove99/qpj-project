@@ -43,14 +43,15 @@
                 alert("邮箱不能为空");
                 return;
             }
+            alert(name+" "+role+" "+pwd+" "+rePwd+" "+phone+" "+email+" "+role);
             //发送请求
             $.ajax({
-                url:"settings/qx/user/Register.do",
+                url:"settings/qx/user/register.do",
                 data:{
-                    Name:name,
-                    Password:pwd,
-                    Phone:phone,
-                    Email:email,
+                    name:name,
+                    pwd:pwd,
+                    phone:phone,
+                    email:email,
                     role:role
                 },
                 type:'post',
