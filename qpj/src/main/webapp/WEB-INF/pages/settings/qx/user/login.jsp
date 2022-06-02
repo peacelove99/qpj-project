@@ -87,25 +87,30 @@
 			<form class="form-horizontal" role="form">
 				<div class="form-group form-group-lg">
 					<div style="width: 350px;">
-						<input class="form-control" id="name" type="text" value="${cookie.cName.value}" placeholder="用户名">
+						<input class="form-control" id="name" type="text" value="${cookie.Name.value}" placeholder="用户名">
 					</div>
 					<div style="width: 350px; position: relative;top: 20px;">
-						<input class="form-control" id="password" type="password" value="${cookie.cPassword.value}" placeholder="密码">
+						<input class="form-control" id="password" type="password" value="${cookie.Password.value}" placeholder="密码">
 					</div>
 
 					<div class="checkbox" id="checkbox" style="position: relative;top: 30px; left: 10px;">
-						<label><input type="radio" name="role" value="clent" checked>&nbsp;&nbsp;客户</label>
-						<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
-						<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
-						<c:if test="${cookie.role == 'driver'}">
-							<label><input type="radio" name="role" value="clent">&nbsp;&nbsp;客户</label>
-							<label><input type="radio" name="role" value="driver" checked>&nbsp;&nbsp;司机</label>
-							<label><input type="radio" name="role" value="admin">&nbsp;&nbsp;管理员</label>
+						<c:if test="${cookie.role.value == 'clent'}">
+							<label><input type="radio" name="role" value="client" checked>&nbsp;&nbsp;客户</label>
 						</c:if>
-						<c:if test="${cookie.role == 'driver'}">
-							<label><input type="radio" name="role" value="clent">&nbsp;&nbsp;客户</label>
-							<label><input type="radio" name="role" value="driver">&nbsp;&nbsp;司机</label>
+						<c:if test="${cookie.role.value != 'clent'}">
+							<label><input type="radio" name="role" value="client">&nbsp;&nbsp;客户</label>
+						</c:if>
+						<c:if test="${cookie.role.value == 'driver'}">
+							<label><input type="radio" name="role" value="driver" checked>&nbsp;&nbsp;司机</label>
+						</c:if>
+						<c:if test="${cookie.role.value != 'driver'}">
+							<label><input type="radio" name="role" value="driver" >&nbsp;&nbsp;司机</label>
+						</c:if>
+						<c:if test="${cookie.role.value == 'driver'}">
 							<label><input type="radio" name="role" value="admin" checked>&nbsp;&nbsp;管理员</label>
+						</c:if>
+						<c:if test="${cookie.role.value != 'driver'}">
+							<label><input type="radio" name="role" value="admin" >&nbsp;&nbsp;管理员</label>
 						</c:if>
 						<br><br>
 						<label>

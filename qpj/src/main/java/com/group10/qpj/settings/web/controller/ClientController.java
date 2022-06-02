@@ -35,14 +35,14 @@ public class ClientController {
     }
 
     @RequestMapping("/settings/qx/user/login.do")
-    public @ResponseBody Object clientLogin(String Name, String Password, String isRemPwd, String role, HttpSession session, HttpServletResponse response){
+    public @ResponseBody Object login(String Name, String Password, String isRemPwd, String role, HttpSession session, HttpServletResponse response){
         //封装参数
         Map<String,Object> map = new HashMap<>();
         //根据查询结果，生成响应信息
         ReturnObject returnObject = new ReturnObject();
         //分角色登录
         switch (role) {
-            case "clent":
+            case "client":
                 //封装参数
                 map.put("cName",Name);
                 map.put("cPassword",MD5.encrypt(Password));
@@ -61,10 +61,12 @@ public class ClientController {
                         //登录成功
                         returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
                         //把client加入session
+                        client.setcRole("client");
                         session.setAttribute(Contants.SESSION_User, client);
+
                         //记住密码
-                        Cookie c1=new Cookie("cName",client.getcName());
-                        Cookie c2=new Cookie("cPassword",Password);
+                        Cookie c1=new Cookie("Name",client.getcName());
+                        Cookie c2=new Cookie("Password",Password);
                         Cookie c3=new Cookie("role",role);
                         if("true".equals(isRemPwd)){
                             //如果需要记住密码，则往外写cookied
@@ -112,10 +114,10 @@ public class ClientController {
     }
 
     @RequestMapping("/settings/qx/user/register.do")
-    public @ResponseBody Object clientRegister(String name, String pwd, String phone, String email, String role){
+    public @ResponseBody Object register(String name, String pwd, String phone, String email, String role){
         ReturnObject returnObject=new ReturnObject();
         switch (role){
-            case "clent":
+            case "client":
                 //封装参数
                 Client client = new Client();
                 System.out.println("客户注册");
