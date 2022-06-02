@@ -1,34 +1,37 @@
 package com.group10.qpj.settings.web.controller;
 
+import com.google.code.kaptcha.Constants;
 import com.group10.qpj.commons.contants.Contants;
 import com.group10.qpj.commons.domain.ReturnObject;
 import com.group10.qpj.commons.utils.MD5;
 import com.group10.qpj.commons.utils.UUIDUtils;
 import com.group10.qpj.settings.domain.Client;
 import com.group10.qpj.settings.service.ClientService;
+import com.google.code.kaptcha.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Controller
 public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private Producer captchaProducer;
 
     /**
      * url要和controller方法处理完请求之后，响应信息返回的页面的资源目录保持一致
@@ -186,6 +189,32 @@ public class ClientController {
         return returnObject;
     }
 
+    @RequestMapping("/verification")
+    public void createCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setDateHeader("Expires", 0);
+        // Set standard HTTP/1.1 no-cache headers.
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+        // Set standard HTTP/1.0 no-cache header.
+        response.setHeader("Pragma", "no-cache");
+        // return a jpeg
+        response.setContentType("image/jpeg");
+        // create the text for the image
+        String capText = captchaProducer.createText();
+        // store the text in the session
+        request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
+        // create the image with the text
+        BufferedImage bi = captchaProducer.createImage(capText);
+        ServletOutputStream out = response.getOutputStream();
+        // write the data out
+        ImageIO.write(bi, "jpg", out);
+        try {
+            out.flush();
+        } finally {
+            out.close();
+        }
+    }
 
 
 }

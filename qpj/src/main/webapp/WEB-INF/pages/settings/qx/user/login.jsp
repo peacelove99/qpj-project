@@ -12,6 +12,11 @@
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function () {
+		// 刷新验证码
+		$("#verification").bind("click", function () {
+			$(this).hide().attr('src', '/verification?random=' + Math.random()).fadeIn();
+		});
+
 		//给整个浏览器窗口添加键盘按下事件
 		$(window).keydown(function (e) {
 			//如果按的是回车键，则提交登录请求
@@ -96,9 +101,7 @@
 
 					<div style="width: 350px; position: relative;top: 30px;">
 
-						<input type="text" id="user_input_verifyCode" name="user_input_verifyCode" placeholder="验证码" maxlength="4">
-						<span class="code_img"> <img src="${pageContext.request.contextPath }/login/getVerifyCode" width="110" height="40" id="verifyCodeImage"></span>
-						<span><a id="changeVerifImageRegister" οnclick="javascript:changeImage();">换一张</a></span>
+						<img id="verification" src="/verification" style="cursor: pointer;" title="看不清？换一张" />
 
 					</div>
 
