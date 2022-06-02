@@ -61,7 +61,7 @@ public class ClientController {
                         //登录成功
                         returnObject.setCode(Contants.RETURN_OBJECT_CODE_SUCCESS);
                         //把client加入session
-                        session.setAttribute(Contants.SESSION_Client, client);
+                        session.setAttribute(Contants.SESSION_User, client);
                         //记住密码
                         Cookie c1=new Cookie("cName",client.getcName());
                         Cookie c2=new Cookie("cPassword",Password);

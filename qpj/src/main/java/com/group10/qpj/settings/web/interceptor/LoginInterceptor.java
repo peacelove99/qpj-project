@@ -14,7 +14,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         //如果用户没有登录成功,则跳转到登录页面
         HttpSession session=httpServletRequest.getSession();
-        Client user=(Client) session.getAttribute(Contants.SESSION_Client);
+        Client user=(Client) session.getAttribute(Contants.SESSION_User);
         if(user==null){
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath());//重定向时，url必须加项目的名称
             return false;
