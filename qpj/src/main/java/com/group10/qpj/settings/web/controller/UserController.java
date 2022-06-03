@@ -1,26 +1,25 @@
 package com.group10.qpj.settings.web.controller;
 
-import com.google.code.kaptcha.Constants;
 import com.group10.qpj.commons.contants.Contants;
 import com.group10.qpj.commons.domain.ReturnObject;
 import com.group10.qpj.commons.utils.MD5;
 import com.group10.qpj.commons.utils.UUIDUtils;
 import com.group10.qpj.settings.domain.Client;
 import com.group10.qpj.settings.service.ClientService;
-import com.google.code.kaptcha.Producer;
+import com.wf.captcha.GifCaptcha;
+import com.wf.captcha.SpecCaptcha;
+import com.wf.captcha.base.Captcha;
+import com.wf.captcha.utils.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,9 +28,6 @@ public class UserController {
 
     @Autowired
     private ClientService clientService;
-
-    @Autowired
-    private Producer captchaProducer;
 
     /**
      * url要和controller方法处理完请求之后，响应信息返回的页面的资源目录保持一致
@@ -53,11 +49,22 @@ public class UserController {
      * @return
      */
     @RequestMapping("/settings/qx/user/login.do")
-    public @ResponseBody Object login(String Name, String Password, String isRemPwd, String role, HttpSession session, HttpServletResponse response){
+    public @ResponseBody Object login(String Name, String Password, String isRemPwd, String role,String code,
+                                      HttpSession session,HttpServletRequest request, HttpServletResponse response){
+
+
         //封装参数
         Map<String,Object> map = new HashMap<>();
         //根据查询结果，生成响应信息
-        ReturnObject returnObject = new ReturnObject();
+        ReturnObject returnObject = new ReturnObject();        //对比验证码
+        // 获取session中的验证码
+        String sessionCode = (String) request.getSession().getAttribute("captcha");
+        // 判断验证码
+        if (code==null || !sessionCode.equals(code.trim().toLowerCase())) {
+            returnObject.setCode(Contants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("验证码不正确");
+            return returnObject;
+        }
         //分角色登录
         switch (role) {
             case "client":
@@ -189,32 +196,35 @@ public class UserController {
         return returnObject;
     }
 
-    @RequestMapping("/verification")
-    public void createCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setDateHeader("Expires", 0);
-        // Set standard HTTP/1.1 no-cache headers.
-        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-        // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
-        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-        // Set standard HTTP/1.0 no-cache header.
-        response.setHeader("Pragma", "no-cache");
-        // return a jpeg
-        response.setContentType("image/jpeg");
-        // create the text for the image
-        String capText = captchaProducer.createText();
-        // store the text in the session
-        request.getSession().setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
-        // create the image with the text
-        BufferedImage bi = captchaProducer.createImage(capText);
-        ServletOutputStream out = response.getOutputStream();
-        // write the data out
-        ImageIO.write(bi, "jpg", out);
-        try {
-            out.flush();
-        } finally {
-            out.close();
-        }
-    }
+    /**
+     * 生成验证码
+     * 官方文档:https://gitee.com/ele-admin/EasyCaptcha
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/settings/qx/user/captcha.do")
+    public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        // 设置请求头为输出图片类型
+        response.setContentType("image/gif");
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        // 三个参数分别为宽、高、位数
+        SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 1);
+        // 设置字体
+        specCaptcha.setFont(new Font("Verdana", Font.PLAIN, 32));  // 有默认字体，可以不用设置
+        // 设置类型，纯数字、纯字母、字母数字混合
+        specCaptcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
+
+        // 验证码存入session
+        request.getSession().setAttribute("captcha", specCaptcha.text().toLowerCase());
+
+        // 输出图片流
+        specCaptcha.out(response.getOutputStream());
+
+    }
 
 }

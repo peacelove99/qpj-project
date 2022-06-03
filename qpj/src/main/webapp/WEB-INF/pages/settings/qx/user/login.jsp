@@ -13,8 +13,8 @@
 <script type="text/javascript">
 	$(function () {
 		// 刷新验证码
-		$("#verification").bind("click", function () {
-			$(this).hide().attr('src', '/verification?random=' + Math.random()).fadeIn();
+		$("#changeCode").click(function () {
+			$("#verification").attr("src","settings/qx/user/captcha.do");//实现局部刷新
 		});
 
 		//给整个浏览器窗口添加键盘按下事件
@@ -32,7 +32,7 @@
 			var password=$.trim($("#password").val());
 			var isRemPwd=$("#isRemPwd").prop("checked");
 			var role=$("#checkbox input[type='radio']:checked").val();
-			var user_input_verifyCode=$("#user_input_verifyCode").val();
+			var code=$.trim($("#captcha").val());
 			//客户:clent 司机:driver 管理员:admin
 
 			//表单验证
@@ -44,6 +44,10 @@
 				alert("密码不能为空");
 				return;
 			}
+			if(code == ''){
+				alert("验证码不能为空");
+				return;
+			}
 
 			//发送请求
 			$.ajax({
@@ -52,7 +56,8 @@
 					Name:name,
 					Password:password,
 					isRemPwd:isRemPwd,
-					role:role
+					role:role,
+					code:code
 				},
 				type:'post',
 				dataType:'json',
@@ -85,7 +90,7 @@
 		<div style="position: absolute; top: 5px; left: 0px; font-size: 30px; font-weight: 400; color: white; font-family: 'times new roman'">&nbsp;&nbsp;&nbsp;&nbsp;汽车拼货接单 &nbsp;<span style="font-size: 12px;">&copy;2022&nbsp;小组10</span></div>
 	</div>
 	
-	<div style="position: absolute; top: 120px; right: 100px;width:450px;height:450px;border:1px solid #D5D5D5">
+	<div style="position: absolute; top: 120px; right: 100px;width:450px;height:500px;border:1px solid #D5D5D5">
 		<div style="position: absolute; top: 0px; right: 60px;">
 			<div class="page-header">
 				<h1>登录<small>&nbsp;&nbsp;&nbsp;&nbsp;<a href="settings/qx/user/toRegister.do">注册</a></small></h1>
@@ -99,10 +104,10 @@
 						<input class="form-control" id="password" type="password" value="${cookie.Password.value}" placeholder="密码">
 					</div>
 
-					<div style="width: 350px; position: relative;top: 30px;">
-
-						<img id="verification" src="/verification" style="cursor: pointer;" title="看不清？换一张" />
-
+					<div style="width: 350px; position: relative;top: 40px;">
+						<input class="form-control" id="captcha" type="text" placeholder="验证码"/>
+						<img id="verification" src="settings/qx/user/captcha.do" style="cursor: pointer;" title="验证码" />
+						<a id="changeCode">看不清？换一张</a>
 					</div>
 
 					<div class="checkbox" id="checkbox" style="position: relative;top: 40px; left: 10px;">
