@@ -207,10 +207,8 @@ public class UserController {
     public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // 设置请求头为输出图片类型
-        response.setContentType("image/gif");
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
+        response.addHeader("Cache-Control", "no-store, must-revalidate");
+        response.addHeader("Expires", "Thu, 01 Jan 1970 00:00:01 GMT");
 
         // 三个参数分别为宽、高、位数
         SpecCaptcha specCaptcha = new SpecCaptcha(130, 48, 1);

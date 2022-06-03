@@ -106,8 +106,8 @@
 
 					<div style="width: 350px; position: relative;top: 40px;">
 						<input class="form-control" id="captcha" type="text" placeholder="验证码"/>
-						<img id="verification" src="settings/qx/user/captcha.do" style="cursor: pointer;" title="验证码" />
-						<a id="changeCode">看不清？换一张</a>
+						<img id="verification" src="settings/qx/user/captcha.do" title="验证码" />
+						<a id="changeCode" style="cursor: pointer;">看不清？换一张</a>
 					</div>
 
 					<div class="checkbox" id="checkbox" style="position: relative;top: 40px; left: 10px;">
